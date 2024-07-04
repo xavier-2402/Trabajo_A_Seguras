@@ -37,6 +37,23 @@ export class OrdersComponent {
     }
   ]
 
+  distributors:any[]=[
+    {
+      code:1,
+      name:'COFARMA'
+    },
+    {
+      code:2,
+      name:'EMPSEPHAR'
+    },
+    {
+      code:3,
+      name:'CEMEFAR'
+    }
+  ]
+
+  showNew:boolean = false;
+
   constructor(private fb:FormBuilder){
     this.buildForm();
   }

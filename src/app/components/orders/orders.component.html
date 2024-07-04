@@ -1,32 +1,43 @@
-<form nz-form [nzLayout]="'vertical'" [formGroup]="form">
-    <nz-form-item>
-        <nz-form-label [nzSpan]="6" >Nombre del medicamento</nz-form-label>
-        <nz-form-control [nzSpan]="14">
-            <input nz-input  formControlName="medicine">
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-label [nzSpan]="6" >Tipo</nz-form-label>
-        <nz-form-control [nzSpan]="14">
-            <nz-select formControlName="type">
-                <nz-option [nzValue]="t.code" [nzLabel]="t.name" *ngFor="let t of types"></nz-option>
-            </nz-select>
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-label [nzSpan]="6" >Cantidad</nz-form-label>
-        <nz-form-control [nzSpan]="14">
-            <input nz-input type="number"  formControlName="quantity">
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-label [nzSpan]="6" >Distribuidor</nz-form-label>
-        <nz-form-control [nzSpan]="14">
-            <nz-radio-group formControlName="distributor">
-                <label nz-radio nzValue="A">COFARMA</label>
-                <label nz-radio nzValue="B">EMPSEPHAR</label>
-                <label nz-radio nzValue="C">CEMEFAR</label>
-            </nz-radio-group>
-        </nz-form-control>
-    </nz-form-item>
-</form>
+<nz-page-header nzBackIcon [nzGhost]="false">
+    <nz-page-header-title>Medicamentos</nz-page-header-title>
+    <nz-page-header-extra>
+      <nz-space>
+        <button *nzSpaceItem nz-button (click)="showNew = true">Nuevo</button>
+      </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<nz-row nzJustify="center">
+    <nz-col nzSpan="16">
+        <form nz-form [nzLayout]="'vertical'" [formGroup]="form" *ngIf="showNew">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" >Nombre del medicamento</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <input nz-input  formControlName="medicine">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" >Tipo</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-select formControlName="type">
+                        <nz-option [nzValue]="t.code" [nzLabel]="t.name" *ngFor="let t of types"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" >Cantidad</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <input nz-input type="number"  formControlName="quantity">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" >Distribuidor</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-radio-group formControlName="distributor">
+                        <label nz-radio [nzValue]="d.code" *ngFor="let d of distributors">{{d.name}}</label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-col>
+</nz-row>

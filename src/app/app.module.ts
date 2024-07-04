@@ -12,6 +12,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NzInputModule,
     BrowserModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NzPageHeaderModule,
+    NzSpaceModule
 
   ],
   providers: [],
