@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, FormBuilder, Validators, AbstractControl, ValidationErrors, FormGroup } from '@angular/forms';
+import { NzMessageComponent, NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-orders',
@@ -9,6 +10,12 @@ import { UntypedFormGroup, UntypedFormBuilder, FormBuilder, Validators } from '@
 export class OrdersComponent {
 
   form:UntypedFormGroup;
+  isVisible = false;
+  distributorSe: string = null;
+  medicineSe: string = null;
+  typeSe: string = null;
+  quantitySe: string = null;
+  address : string = null
 
   types:any[] = [
     {
@@ -53,8 +60,16 @@ export class OrdersComponent {
   ]
 
   showNew:boolean = false;
+  allChecked = false;
+  indeterminate = true;
+  branchs:any[] = [
+    { label: 'PRINCIPAL', value: 1, checked: true },
+    { label: 'SECUNDARIA', value: 2, checked: false }
+  ];
 
-  constructor(private fb:FormBuilder){
+  constructor(private fb:FormBuilder,
+    private msg: NzMessageService
+  ){
     this.buildForm();
   }
 
@@ -63,8 +78,67 @@ export class OrdersComponent {
     this.form  = this.fb.group({
       medicine:[null,[Validators.required,Validators.minLength(3),Validators.maxLength(250)]],
       type:[null,[Validators.required]],
-      quantity:[null,[Validators.required,Validators.min(3),Validators.max(100)]],
+      quantity:[null,[Validators.required,Validators.min(3),Validators.max(100), this.nonNegativeValidator]],
       distributor:[null,[Validators.required]],
+      branch: [null, [Validators.required]]
     });
+  }
+
+
+  nonNegativeValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value !== null && control.value < 0) {
+      return { 'negative': true };
+    }
+    return null;
+  }
+
+  get quantity() {
+    return this.form.get('quantity');
+  }
+
+  delete(){
+    this.buildForm()
+  }
+
+  log(){
+    if (this.branchs.every(item => !item.checked)) {
+      this.allChecked = false;
+      this.indeterminate = false;
+    } else if (this.branchs.every(item => item.checked)) {
+      this.allChecked = true;
+      this.indeterminate = false;
+    } else {
+      this.indeterminate = true;
+    }
+  }
+
+  onOkForm(){
+    if (!this.form.valid) {
+      this.msg.error('Complete los campos obligatorios e ingrese correctamente');
+      return;
+    }
+    this.isVisible = true;
+
+    this.distributorSe = this.distributors.find(p => p.code == this.form.value.distributor).name;
+    this.medicineSe = this.form.value.medicine;
+    this.typeSe = this.types.find(p => p.code == this.form.value.type).name;
+    this.quantitySe = this.form.value.quantity;
+    var selected = this.form.value.branch.find(p => p.checked == true);
+    if( selected.value == 1){
+      this.address = "Calle 12 de Diciembre. 28"
+    }else if (selected.value == 2){
+      this.address = "Calle Av. Quito."
+    }else{
+      this.address = "Calle 12 de Diciembre. 28 y Calle Av. Quito."
+    }
+  }
+
+  handleOk(): void {
+    this.isVisible = false;
+    this.msg.success("Enviado Correctamente")
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
   }
 }

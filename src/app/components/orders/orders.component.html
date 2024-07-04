@@ -1,9 +1,9 @@
 <nz-page-header nzBackIcon [nzGhost]="false">
     <nz-page-header-title>Medicamentos</nz-page-header-title>
     <nz-page-header-extra>
-      <nz-space>
-        <button *nzSpaceItem nz-button (click)="showNew = true">Nuevo</button>
-      </nz-space>
+        <nz-space>
+            <button *nzSpaceItem nz-button (click)="showNew = true">Nuevo</button>
+        </nz-space>
     </nz-page-header-extra>
 </nz-page-header>
 
@@ -11,13 +11,13 @@
     <nz-col nzSpan="16">
         <form nz-form [nzLayout]="'vertical'" [formGroup]="form" *ngIf="showNew">
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" >Nombre del medicamento</nz-form-label>
+                <nz-form-label [nzSpan]="6">Nombre del medicamento</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <input nz-input  formControlName="medicine">
+                    <input nz-input formControlName="medicine">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" >Tipo</nz-form-label>
+                <nz-form-label [nzSpan]="6">Tipo</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                     <nz-select formControlName="type">
                         <nz-option [nzValue]="t.code" [nzLabel]="t.name" *ngFor="let t of types"></nz-option>
@@ -25,19 +25,67 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" >Cantidad</nz-form-label>
+                <nz-form-label [nzSpan]="6">Cantidad</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <input nz-input type="number"  formControlName="quantity">
+                    <input nz-input type="number" formControlName="quantity">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)">
+                <nz-form-control [nzSpan]="14" nzErrorTip>
+                    <div *ngIf="quantity.errors?.['required']">
+                        La cantidad es obligatoria.
+                    </div>
+                    <div *ngIf="quantity.errors?.['min']">
+                        La cantidad no puede ser negativa.
+                    </div>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" >Distribuidor</nz-form-label>
+                <nz-form-label [nzSpan]="6">Distribuidor</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                     <nz-radio-group formControlName="distributor">
                         <label nz-radio [nzValue]="d.code" *ngFor="let d of distributors">{{d.name}}</label>
                     </nz-radio-group>
                 </nz-form-control>
             </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6">Sucursal</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-checkbox-group [(ngModel)]="branchs" formControlName="branch"  (ngModelChange)="log()">
+                    </nz-checkbox-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control [nzSpan]="15" [nzOffset]="5">
+                    <nz-space>
+                        <button *nzSpaceItem nz-button nzType="primary" (click)="onOkForm()">OK</button>
+                        <button *nzSpaceItem nz-button nzType="primary" (click)="delete()" nzDanger>Borrar</button>
+                    </nz-space>
+                </nz-form-control>
+            </nz-form-item>
         </form>
     </nz-col>
 </nz-row>
+
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'Pedido al Distribuidor '+distributorSe" [nzFooter]="null">
+    <ng-container *nzModalContent>
+        <nz-row>
+            <h2>Medicamento apedir: </h2>
+        </nz-row>
+        <nz-row>
+            <h4>{{quantitySe}} unidades del {{typeSe}} con el nombre {{medicineSe}}</h4>
+        </nz-row>
+        <nz-row>
+            <h4 >Para la Farmacion situada en {{address}}</h4>
+        </nz-row>
+        <nz-row [nzGutter]="[8,8]" nzJustify="end">
+            <nz-col>
+                <button nz-button nzType="default" (click)="handleCancel()" >Cancelar</button>
+            </nz-col>
+            <nz-col>
+                <button nz-button nzType="primary" (click)="handleOk()" >Guardar</button>
+            </nz-col>
+        </nz-row>
+    </ng-container>
+</nz-modal>

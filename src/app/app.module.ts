@@ -14,6 +14,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @NgModule({
   declarations: [
@@ -34,8 +36,9 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     NzPageHeaderModule,
-    NzSpaceModule
-
+    NzSpaceModule,
+    NzMessageModule,
+    NzModalModule
   ],
   providers: [],
   bootstrap: [AppComponent]
