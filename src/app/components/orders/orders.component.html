@@ -1,4 +1,4 @@
-<nz-page-header nzBackIcon [nzGhost]="false">
+<nz-page-header [nzGhost]="false">
     <nz-page-header-title>Medicamentos</nz-page-header-title>
     <nz-page-header-extra>
         <nz-space>
@@ -11,22 +11,22 @@
     <nz-col nzSpan="16">
         <form nz-form [nzLayout]="'vertical'" [formGroup]="form" *ngIf="showNew">
             <nz-form-item>
-                <nz-form-label [nzSpan]="6">Nombre del medicamento</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-label [nzSpan]="6" nzRequired>Nombre del medicamento</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Ingrese un nombre correcto">
                     <input nz-input formControlName="medicine">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6">Tipo</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-label [nzSpan]="6" nzRequired>Tipo</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Ingrese un tipo" >
                     <nz-select formControlName="type">
                         <nz-option [nzValue]="t.code" [nzLabel]="t.name" *ngFor="let t of types"></nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6">Cantidad</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-label [nzSpan]="6" nzRequired>Cantidad</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Ingrese una cantidad válida">
                     <input nz-input type="number" formControlName="quantity">
                 </nz-form-control>
             </nz-form-item>
@@ -41,18 +41,18 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6">Distribuidor</nz-form-label>
-                <nz-form-control [nzSpan]="14">
+                <nz-form-label [nzSpan]="6" nzRequired>Distribuidor</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Seleccione un distribuidor">
                     <nz-radio-group formControlName="distributor">
                         <label nz-radio [nzValue]="d.code" *ngFor="let d of distributors">{{d.name}}</label>
                     </nz-radio-group>
                 </nz-form-control>
             </nz-form-item>
-
             <nz-form-item>
-                <nz-form-label [nzSpan]="6">Sucursal</nz-form-label>
-                <nz-form-control [nzSpan]="14">
-                    <nz-checkbox-group [(ngModel)]="branchs" formControlName="branch"  (ngModelChange)="log()">
+                <nz-form-label [nzSpan]="6" nzRequired>Sucursal</nz-form-label>
+                    <span class="error-input" *ngIf="!isValidBranch">Seleccione una sucursal</span>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Seleccione una Sucursal">
+                    <nz-checkbox-group [(ngModel)]="branchs" [ngModelOptions]="{standalone: true}"  (ngModelChange)="log()">
                     </nz-checkbox-group>
                 </nz-form-control>
             </nz-form-item>
@@ -68,10 +68,10 @@
     </nz-col>
 </nz-row>
 
-<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'Pedido al Distribuidor '+distributorSe" [nzFooter]="null">
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'Pedido al Distribuidor '+distributorSe" [nzFooter]="null" nzClosable>
     <ng-container *nzModalContent>
         <nz-row>
-            <h2>Medicamento apedir: </h2>
+            <h2>Medicamento a pedir: </h2>
         </nz-row>
         <nz-row>
             <h4>{{quantitySe}} unidades del {{typeSe}} con el nombre {{medicineSe}}</h4>

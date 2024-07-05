@@ -16,7 +16,7 @@ export class OrdersComponent {
   typeSe: string = null;
   quantitySe: string = null;
   address : string = null
-
+  isValidBranch:boolean = true;
   types:any[] = [
     {
       code:1,
@@ -97,10 +97,15 @@ export class OrdersComponent {
   }
 
   delete(){
-    this.buildForm()
+    this.buildForm();
+    this.branchs.map(x => x.checked = false)
   }
 
   log(){
+    let items = this.branchs.filter(x => x.checked)
+    if(items.length == 0) this.isValidBranch = false;
+    else this.isValidBranch = true;
+
     if (this.branchs.every(item => !item.checked)) {
       this.allChecked = false;
       this.indeterminate = false;
@@ -113,8 +118,9 @@ export class OrdersComponent {
   }
 
   onOkForm(){
+    this.form.get('branch').setValue(this.branchs.filter(x => x.checked));
     if (!this.form.valid) {
-      this.msg.error('Complete los campos obligatorios e ingrese correctamente');
+      this.msg.error('Complete los campos obligatorios e ingrese la información correcta');
       return;
     }
     this.isVisible = true;
@@ -123,13 +129,16 @@ export class OrdersComponent {
     this.medicineSe = this.form.value.medicine;
     this.typeSe = this.types.find(p => p.code == this.form.value.type).name;
     this.quantitySe = this.form.value.quantity;
-    var selected = this.form.value.branch.find(p => p.checked == true);
-    if( selected.value == 1){
+    var selected = this.form.value.branch.filter(p => p.checked == true);
+    if(selected.length == 2){
+      this.address = "Calle 12 de Diciembre. 28 y Calle Av. Quito.";
+      return;
+    }
+
+    if(selected.find(x => x == 1)){
       this.address = "Calle 12 de Diciembre. 28"
-    }else if (selected.value == 2){
-      this.address = "Calle Av. Quito."
     }else{
-      this.address = "Calle 12 de Diciembre. 28 y Calle Av. Quito."
+      this.address = "Calle Av. Quito."
     }
   }
 
