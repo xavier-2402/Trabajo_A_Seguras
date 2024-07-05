@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, FormBuilder, Validators, AbstractControl, ValidationErrors, FormGroup } from '@angular/forms';
 import { NzMessageComponent, NzMessageService } from 'ng-zorro-antd/message';
+import { Order } from 'src/app/models/order';
 
 @Component({
   selector: 'app-orders',
@@ -59,7 +60,7 @@ export class OrdersComponent {
     }
   ]
 
-  orders:any[] = [];
+  orders:Order[] = [];
 
   showNew:boolean = false;
   allChecked = false;
@@ -69,6 +70,7 @@ export class OrdersComponent {
     { label: 'SECUNDARIA', value: 2, checked: false }
   ];
 
+  order:Order;
   constructor(private fb:FormBuilder,
     private msg: NzMessageService
   ){
@@ -99,7 +101,7 @@ export class OrdersComponent {
   }
 
   delete(){
-    this.buildForm();
+    this.form.reset();
     this.branchs.map(x => x.checked = false)
   }
 
@@ -134,22 +136,36 @@ export class OrdersComponent {
     var selected = this.form.value.branch.filter(p => p.checked == true);
     if(selected.length == 2){
       this.address = "Calle 12 de Diciembre. 28 y Calle Av. Quito.";
-      return;
-    }
-
-    if(selected.find(x => x == 1)){
+    }else if(selected.find(x => x == 1)){
       this.address = "Calle 12 de Diciembre. 28"
     }else{
       this.address = "Calle Av. Quito."
     }
+    this.order = this.form.value;
+    console.log(this.order);
+    
+    this.order.address = this.address;
+    this.order.distributorName = this.distributorSe;
+    this.order.typeName = this.typeSe;
+    console.log(this.address);
+    this.order.address = this.address;
+    console.log(this.order.address);
+    
   }
 
   handleOk(): void {
     this.isVisible = false;
-    this.msg.success("Enviado Correctamente")
+    this.msg.success("Enviado Correctamente");
+    this.delete();
+    this.orders = [...this.orders, this.order];
   }
 
   handleCancel(): void {
     this.isVisible = false;
+  }
+
+  cancelForm(){
+    this.delete();
+    this.showNew = false;
   }
 }

@@ -2,7 +2,7 @@
     <nz-page-header-title>Medicamentos</nz-page-header-title>
     <nz-page-header-extra>
         <nz-space>
-            <button *nzSpaceItem nz-button (click)="showNew = true">Nuevo</button>
+            <button *nzSpaceItem nz-button (click)="showNew = true" nzSize="small">Nuevo</button>
         </nz-space>
     </nz-page-header-extra>
 </nz-page-header>
@@ -26,11 +26,11 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzRequired>Cantidad</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Ingrese una cantidad válida">
+                <nz-form-control [nzSpan]="14" nzErrorTip="Ingrese una cantidad válida, no se puede ser 0 o negativa, ni mayor a 100">
                     <input nz-input type="number" formControlName="quantity">
                 </nz-form-control>
             </nz-form-item>
-            <nz-form-item *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)">
+            <!-- <nz-form-item *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)">
                 <nz-form-control [nzSpan]="14" nzErrorTip>
                     <div *ngIf="quantity.errors?.['required']">
                         La cantidad es obligatoria.
@@ -39,7 +39,7 @@
                         La cantidad no puede ser negativa.
                     </div>
                 </nz-form-control>
-            </nz-form-item>
+            </nz-form-item> -->
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzRequired>Distribuidor</nz-form-label>
                 <nz-form-control [nzSpan]="14" nzErrorTip="Seleccione un distribuidor">
@@ -61,13 +61,34 @@
                     <nz-space>
                         <button *nzSpaceItem nz-button nzType="primary" (click)="onOkForm()">OK</button>
                         <button *nzSpaceItem nz-button nzType="primary" (click)="delete()" nzDanger>Borrar formulario</button>
-                        <button *nzSpaceItem nz-button nzType="primary" (click)="showNew = false" nzDanger>Cancelar</button>
+                        <button *nzSpaceItem nz-button nzType="primary" (click)="cancelForm()" nzDanger>Cancelar</button>
                     </nz-space>
                 </nz-form-control>
             </nz-form-item>
         </form>
     </nz-col>
 </nz-row>
+
+<nz-table #table [nzData]="orders" nzSize="small">
+    <thead>
+      <tr>
+        <th>Medicamento</th>
+        <th>Tipo</th>
+        <th>Cantidad</th>
+        <th>Proveedor</th>
+        <th>Sucursal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of table.data">
+        <td>{{ data.medicine??'' }}</td>
+        <td>{{ data.typeName??'' }}</td>
+        <td>{{ data.quantity??'' }}</td>
+        <td>{{ data.distributorName??'' }}</td>
+        <td>{{ data.address??'' }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
 
 <nz-modal [(nzVisible)]="isVisible" [nzTitle]="'Pedido al Distribuidor '+distributorSe" [nzFooter]="null" nzClosable>
     <ng-container *nzModalContent>

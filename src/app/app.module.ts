@@ -16,6 +16,11 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NZ_I18N, es_ES } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import es from '@angular/common/locales/es';
 
 @NgModule({
   declarations: [
@@ -38,9 +43,11 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzPageHeaderModule,
     NzSpaceModule,
     NzMessageModule,
-    NzModalModule
+    NzModalModule,
+    NzEmptyModule,
+    NzTableModule
   ],
-  providers: [],
+  providers: [{ provide: NZ_I18N, useValue: es_ES }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
