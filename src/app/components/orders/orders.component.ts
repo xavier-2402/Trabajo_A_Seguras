@@ -59,6 +59,8 @@ export class OrdersComponent {
     }
   ]
 
+  orders:any[] = [];
+
   showNew:boolean = false;
   allChecked = false;
   indeterminate = true;
